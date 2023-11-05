@@ -153,6 +153,16 @@ class WordPressClient:
 
         return categories
 
+    def create_category(self, name):
+        endpoint = "wp/v2/categories"
+        method = 'POST'
+        data = {
+            "name": name,
+        }
+
+        response = self._request(method, endpoint, data=data)
+        return response.json()
+
     def get_tags(self) -> list:
         endpoint = "wp/v2/tags"
         method = 'GET'
@@ -179,3 +189,13 @@ class WordPressClient:
             page += 1
 
         return tags
+
+    def create_tag(self, name):
+        endpoint = "wp/v2/tags"
+        method = 'POST'
+        data = {
+            "name": name,
+        }
+
+        response = self._request(method, endpoint, data=data)
+        return response.json()
