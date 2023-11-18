@@ -7,8 +7,6 @@ class WordPressClient:
         self.base_url = f'{base_url}/?rest_route='
         # self.base_url = f'{base_url}/wp-json'
 
-        self.valid_status_code = [200, 201]
-
         credentials = username + ':' + app_password
         token = base64.b64encode(credentials.encode())
         self.headers = {
@@ -36,7 +34,7 @@ class WordPressClient:
         except Exception as e:
             raise Exception(e)
 
-        if response.status_code not in self.valid_status_code:
+        if response.status_code >= 400:
             print(response.status_code)
             print(response.text)
             raise Exception(response.json())
@@ -140,7 +138,6 @@ class WordPressClient:
             }
             response = self._request(method, endpoint, data=data)
             response_json = response.json()
-            # print(response_json)
 
             if len(response_json) == 0:
                 is_end = True
