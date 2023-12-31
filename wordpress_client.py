@@ -4,8 +4,7 @@ import requests
 
 class WordPressClient:
     def __init__(self, base_url, username, app_password):
-        self.base_url = f'{base_url}/?rest_route='
-        # self.base_url = f'{base_url}/wp-json'
+        self.base_url = f'{base_url}/wp-json'
 
         credentials = username + ':' + app_password
         token = base64.b64encode(credentials.encode())
@@ -19,6 +18,7 @@ class WordPressClient:
     def _request(self, method, endpoint, data=None, params=None, files=None):
         url = f'{self.base_url}/{endpoint}'
         print(f'url: {url}')
+        print(f'headers: {self.headers}')
         print(f'method: {method}')
         print(f'data: {data}')
 
@@ -55,6 +55,8 @@ class WordPressClient:
         self,
         title,
         content,
+        slug: str | None = None,
+        excerpt: str | None = None,
         categories: list[str] | None = [],
         tags: list[str] | None = [],
         featured_media: int | None = None,
@@ -74,15 +76,48 @@ class WordPressClient:
             data['tags'] = tags
         if featured_media is not None:
             data['featured_media'] = featured_media
+        if slug is not None:
+            data['slug'] = slug
+        if excerpt is not None:
+            data['excerpt'] = excerpt
 
         response = self._request(method, endpoint, data=data)
 
         return response.json()['id']
 
-    def update_post(self, post_id, data):
+    def update_post(
+        self,
+        title,
+        content,
+        post_id,
+        slug: str | None = None,
+        excerpt: str | None = None,
+        categories: list[str] | None = [],
+        tags: list[str] | None = [],
+        featured_media: int | None = None,
+        status="publish",
+    ):
         endpoint = f"wp/v2/posts/{post_id}"
-        method = 'DELETE'
+        method = 'POST'
+        data = {
+            "title": title,
+            "content": content,
+            "status": status,
+        }
+
+        if len(categories) > 0:
+            data["categories"] = categories
+        if len(tags) > 0:
+            data["tags"] = tags
+        if featured_media is not None:
+            data["featured_media"] = featured_media
+        if slug is not None:
+            data["slug"] = slug
+        if excerpt is not None:
+            data["excerpt"] = excerpt
+
         response = self._request(method, endpoint, data=data)
+
         return response.json()
 
     def delete_post(self, post_id):
