@@ -42,13 +42,15 @@ class WordPressClient:
         return response
 
     def get_posts(self):
-        url = f"{self.base_url}/wp/v2/posts"
-        response = requests.get(url)
+        endpoint = "wp/v2/posts"
+        method = "POST"
+        response = self._request(method, endpoint)
         return response.json()
 
     def get_post(self, post_id):
-        url = f"{self.base_url}/wp/v2/posts/{post_id}"
-        response = requests.get(url)
+        endpoint = f"wp/v2/posts/{post_id}"
+        method = "GET"
+        response = self._request(method, endpoint)
         return response.json()
 
     def create_post(
@@ -127,14 +129,11 @@ class WordPressClient:
         response = self._request(method, endpoint)
         return response.json()
 
-    def create_media(self, image_url: str) -> int:
+    def create_media(self, image_url: str) -> dict:
         """_summary_
 
         Args:
             image_url: 画像URL
-
-        Returns:
-            int: メディアID
         """
         response = requests.get(image_url)
         with open(self.image_save_path, 'wb') as f:
@@ -147,9 +146,9 @@ class WordPressClient:
 
         print(response.json())
 
-        return response.json()['id']
+        return response.json()
 
-    def delete_media(self, media_id):
+    def delete_media(self, media_id: int):
         endpoint = f"wp/v2/media/{media_id}"
         method = 'DELETE'
         data = {
