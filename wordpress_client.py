@@ -85,7 +85,7 @@ class WordPressClient:
 
         response = self._request(method, endpoint, data=data)
 
-        return response.json()['id']
+        return response.json()
 
     def update_post(
         self,
