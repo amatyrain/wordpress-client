@@ -41,10 +41,12 @@ class WordPressClient:
 
         return response
 
-    def get_posts(self):
+    def get_posts(self, data: dict = {}):
         endpoint = "wp/v2/posts"
-        method = "POST"
-        response = self._request(method, endpoint)
+        method = "GET"
+
+        response = self._request(method, endpoint, data=data)
+        print(response.text)
         return response.json()
 
     def get_post(self, post_id):
@@ -127,6 +129,13 @@ class WordPressClient:
         method = 'DELETE'
 
         response = self._request(method, endpoint)
+        return response.json()
+
+    def get_medias(self, data: dict = {}):
+        endpoint = "wp/v2/media"
+        method = "GET"
+
+        response = self._request(method, endpoint, data=data)
         return response.json()
 
     def create_media(self, image_url: str) -> dict:
