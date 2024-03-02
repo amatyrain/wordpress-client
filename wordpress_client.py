@@ -4,7 +4,8 @@ import requests
 
 class WordPressClient:
     def __init__(self, base_url, username, app_password):
-        self.base_url = f'{base_url}/wp-json'
+        self.base_url = base_url
+        self.api_base_url = f'{base_url}/wp-json'
 
         credentials = username + ':' + app_password
         token = base64.b64encode(credentials.encode())
@@ -16,7 +17,7 @@ class WordPressClient:
         self.per_page_limit = 100
 
     def _request(self, method, endpoint, data=None, params=None, files=None):
-        url = f'{self.base_url}/{endpoint}'
+        url = f'{self.api_base_url}/{endpoint}'
         print(f'url: {url}')
         print(f'headers: {self.headers}')
         print(f'method: {method}')
