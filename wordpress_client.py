@@ -62,8 +62,8 @@ class WordPressClient:
         content,
         slug: str | None = None,
         excerpt: str | None = None,
-        categories: list[str] | None = [],
-        tags: list[str] | None = [],
+        categories: list[int] = [],
+        tags: list[str] = [],
         featured_media: int | None = None,
         status="publish"
     ) -> str:
@@ -97,8 +97,8 @@ class WordPressClient:
         post_id,
         slug: str | None = None,
         excerpt: str | None = None,
-        categories: list[str] | None = [],
-        tags: list[str] | None = [],
+        categories: list[int] = [],
+        tags: list[str] = [],
         featured_media: int | None = None,
         status="publish",
     ):
